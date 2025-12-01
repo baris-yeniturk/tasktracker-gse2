@@ -14,4 +14,9 @@ public class TaskTest{
         Task task = new Task("Test");
         assertEquals("Test", task.getDescription());
     }
+
+    @Test
+    void testCreateTaskWithEmptyDescription(){
+        assertThrows(IllegalArgumentException.class, () -> new Task(""));
+    }
 }
