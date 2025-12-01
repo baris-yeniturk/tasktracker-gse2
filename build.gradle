@@ -1,8 +1,10 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'jacoco'
 }
 
-group = 'org.slotmachine'
+group = 'com.tasktracker'
 version = '1.0-SNAPSHOT'
 
 repositories {
@@ -10,11 +12,51 @@ repositories {
 }
 
 dependencies {
+    // JUnit 5
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // MSSQL Server
+    implementation 'com.microsoft.sqlserver:mssql-jdbc:12.4.2.jre11'
+}
+
+application {
+    mainClass = 'com.tasktracker.Main'
 }
 
 test {
     useJUnitPlatform()
+
+    // Test Output konfigurieren
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+    }
+
+    // Jacoco für Test Coverage
+    finalizedBy jacocoTestReport
+}
+
+jacoco {
+    toolVersion = "0.8.11"
+}
+
+jacocoTestReport {
+    dependsOn test
+
+    reports {
+        xml.required = true
+        html.required = true
+        html.outputLocation = layout.buildDirectory.dir('reports/jacoco')
+    }
+}
+
+// Task für vollständigen Build mit Tests und Coverage
+task buildWithCoverage {
+    dependsOn clean, build, test, jacocoTestReport
+
+    doLast {
+        println "Build abgeschlossen! Coverage-Report: build/reports/jacoco/index.html"
+    }
 }
