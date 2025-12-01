@@ -29,4 +29,13 @@ public class TaskTest{
     void testCreateTaskWithWhitespaceDescription(){
         assertThrows(IllegalArgumentException.class, () -> new Task("   "));
     }
+
+    @Test
+    void testUpdateTaskDescription(){
+        Task task = new Task("Alte Beschreibung");
+
+        task.setDescription("Neue Beschreibung");
+
+        assertEquals("Neue Beschreibung", task.getDescription());
+    }
 }
