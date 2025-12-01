@@ -5,11 +5,17 @@ public class Task{
 
     public Task(String description){
         if (description == null || description.trim().isEmpty()){
-            throw new IllegalArgumentException("No description found");
+            throw new IllegalArgumentException("Leere Beschreibung");
         }
         this.description = description;
     }
 
+    public void setDescription(String description){
+        if (description == null || description.trim().isEmpty()){
+            throw new IllegalArgumentException("Leere Beschreibung");
+        }
+        this.description = description;
+    }
     public String getDescription(){
         return description;
     }
