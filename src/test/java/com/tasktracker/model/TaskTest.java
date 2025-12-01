@@ -11,7 +11,7 @@ public class TaskTest{
 
     @Test
     void testCreateTaskWithValidDescription(){
-        Task task = new Task();
+        Task task = new Task("Test");
         assertEquals("Test", task.getDescription());
     }
 }
