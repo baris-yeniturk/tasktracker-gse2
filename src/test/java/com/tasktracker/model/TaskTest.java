@@ -19,4 +19,14 @@ public class TaskTest{
     void testCreateTaskWithEmptyDescription(){
         assertThrows(IllegalArgumentException.class, () -> new Task(""));
     }
+
+    @Test
+    void testCreateTaskWithNullDescription(){
+        assertThrows(IllegalArgumentException.class, () -> new Task(null));
+    }
+
+    @Test
+    void testCreateTaskWithWhitespaceDescription(){
+        assertThrows(IllegalArgumentException.class, () -> new Task("   "));
+    }
 }
