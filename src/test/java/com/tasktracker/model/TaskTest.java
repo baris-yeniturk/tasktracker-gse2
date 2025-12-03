@@ -38,4 +38,10 @@ public class TaskTest{
 
         assertEquals("Neue Beschreibung", task.getDescription());
     }
+
+    @Test
+    void testUpdateTaskWithEmptyDescription(){
+        Task task = new Task("Original");
+        assertThrows(IllegalArgumentException.class, () -> task.setDescription(""));
+    }
 }
