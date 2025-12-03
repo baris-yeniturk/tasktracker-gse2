@@ -6,6 +6,7 @@ plugins {
 
 group = 'com.tasktracker'
 version = '1.0-SNAPSHOT'
+sourceCompatibility = '23'
 
 repositories {
     mavenCentral()
@@ -32,7 +33,11 @@ test {
     testLogging {
         events "passed", "skipped", "failed"
         exceptionFormat "full"
+        showStandardStreams true
     }
+
+    ignoreFailures = false
+    failFast = false
 
     // Jacoco für Test Coverage
     finalizedBy jacocoTestReport
@@ -48,15 +53,65 @@ jacocoTestReport {
     reports {
         xml.required = true
         html.required = true
-        html.outputLocation = layout.buildDirectory.dir('reports/jacoco')
+        csv.required = false
+
     }
 }
 
 // Task für vollständigen Build mit Tests und Coverage
-task buildWithCoverage {
-    dependsOn clean, build, test, jacocoTestReport
+task fullBuild{
+    group = 'build'
+    description = 'Clean build with test and coverage report'
+
+    dependsOn clean, test, jacocoTestReport
 
     doLast {
-        println "Build abgeschlossen! Coverage-Report: build/reports/jacoco/index.html"
+        println "========================================="
+        println "Build erfolgreich abgeschlossen"
+        println "Test Coverage Report: build/reports/jacoco/html/index.html"
+        println "Test Report: build/reports/tests/test/index.html"
+        println "========================================="
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.tasktracker.Main',
+                'Implementation-Title': 'TaskTracker',
+                'Implementation-Version': version,
+                'Created-By': 'myenituerk',
+                'Build-Timestamp': new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date())
+        )
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    archiveBaseName = 'task-tracker'
+    archiveVersion = ''
+}
+
+tasks.register('cc'){
+    dependsOn clean
+    doLast {
+        println "Projekt bereinigt"
+    }
+}
+
+tasks.register('tc'){
+    dependsOn test
+    doLast {
+        println "Tests ausgeführt"
+    }
+}
+
+tasks.register('cov'){
+    dependsOn jacocoTestReport
+    doLast {
+        println "Coverage Report generiert"
     }
 }
