@@ -35,4 +35,17 @@ public class TaskRepositoryTest {
         assertEquals("Aufgabe", savedTask.getDescription());
         assertEquals(TaskStatus.OFFEN, savedTask.getTaskStatus());
     }
+
+    @Test
+    void testFindTaskById(){
+        Task task = new Task("Aufgabe mit ID");
+        Task savedTask = repository.save(task);
+        long taskId = savedTask.getTaskId();
+
+        Optional<Task> found = repository.findById(taskId);
+
+        assertTrue(found.isPresent());
+        assertEquals(taskId, found.get().getTaskId());
+        assertEquals("Aufgabe mit ID", found.get().getDescription());
+    }
 }
