@@ -52,4 +52,13 @@ public class TaskTest{
         task.setTaskStatus(TaskStatus.ERLEDIGT);
         assertEquals(TaskStatus.ERLEDIGT, task.getTaskStatus());
     }
+
+    @Test
+    void testCreateTaskWithAllParameters(){
+        Task task = new Task(1L, "Beschreibung", TaskStatus.ERLEDIGT);
+
+        assertEquals(1L, task.getTaskId);
+        assertEquals("Beschreibung", task.getDescription());
+        assertEquals(TaskStatus.ERLEDIGT, task.getTaskStatus());
+    }
 }
