@@ -213,7 +213,157 @@ public class SqlServerTaskRepository implements TaskRepository{
         }
     }
 
+    @Override
+    public List<Task> findByStatus(TaskStatus status){
+        if (status == null) {
+            throw new IllegalArgumentException("Status darf nicht null sein");
+        }
 
+        List<Task> tasks = new ArrayList<>();
+        String sql = "SELECT id, description, status, created_at FROM Tasks WHERE status = ? ORDER BY created_at DESC";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, status.name());
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    tasks.add(mapRowToTask(rs));
+                }
+            }
+
+            System.out.println(tasks.size() + " Aufgaben mit Status '" + status + "' gefunden");
+
+        } catch (SQLException e) {
+            throw new PersistenceException("Fehler beim Filtern nach Status: " + status, e);
+        }
+
+        return tasks;
+    }
+
+    @Override
+    public List<Task> findByDescriptionContaining(String keyword){
+        if (keyword == null || keyword.trim().isEmpty()) {
+            throw new IllegalArgumentException("Suchbegriff darf nicht leer sein");
+        }
+
+        List<Task> tasks = new ArrayList<>();
+        String sql = "SELECT id, description, status, created_at FROM Tasks WHERE LOWER(description) LIKE ? ORDER BY created_at DESC";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, "%" + keyword.toLowerCase() + "%");
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    tasks.add(mapRowToTask(rs));
+                }
+            }
+
+            System.out.println(tasks.size() + " Aufgaben mit '" + keyword + "' gefunden");
+
+        } catch (SQLException e) {
+            throw new PersistenceException("Fehler bei der Suche nach: " + keyword, e);
+        }
+
+        return tasks;
+    }
+
+    @Override
+    public long count(){
+        String sql = "SELECT COUNT(*) FROM Tasks";
+
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+
+            return 0;
+
+        } catch (SQLException e) {
+            throw new PersistenceException("Fehler beim Zählen der Aufgaben", e);
+        }
+    }
+
+    @Override
+    public long countByStatus(TaskStatus status){
+        if (status == null) {
+            throw new IllegalArgumentException("Status darf nicht null sein");
+        }
+
+        String sql = "SELECT COUNT(*) FROM Tasks WHERE status = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, status.name());
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getLong(1);
+                }
+            }
+
+            return 0;
+
+        } catch (SQLException e) {
+            throw new PersistenceException("Fehler beim Zählen nach Status: " + status, e);
+        }
+    }
+
+    @Override
+    public void saveAll(List<Task> taskList){
+        if (taskList == null || taskList.isEmpty()){
+            return;
+        }
+
+        String sql = "INSERT INTO Tasks (description, status, created_at) VALUES (?, ?, GETDATE())";
+
+        try (Connection conn = getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+
+            for (Task task : taskList){
+                validateTask(task);
+                pstmt.setString(1, task.getDescription());
+                pstmt.setString(2, task.getTaskStatus().name());
+                pstmt.addBatch();
+            }
+
+            int[] batchResults = pstmt.executeBatch();
+
+            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()){
+                int i = 0;
+                while (generatedKeys.next() && i < taskList.size()){
+                    taskList.get(i).setTaskId(generatedKeys.getLong(1));
+                    i++;
+                }
+            }
+            System.out.println("Batch gespeichert: " + batchResults.length + " Aufgaben");
+
+        }catch (SQLException e){
+            throw new PersistenceException("Fehler beim Batch-Speichern", e);
+        }
+    }
+
+    @Override
+    public void deleteAll(){
+        String sql = "DELETE FROM Tasks";
+
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement()) {
+
+            int deletedRows = stmt.executeUpdate(sql);
+            System.out.println("🗑️ Alle Aufgaben gelöscht: " + deletedRows + " Zeilen");
+
+        } catch (SQLException e) {
+            throw new PersistenceException("Fehler beim Löschen aller Aufgaben", e);
+        }
+    }
 
     private Task mapRowToTask(ResultSet rs) throws SQLException{
         long id = rs.getLong("id");
