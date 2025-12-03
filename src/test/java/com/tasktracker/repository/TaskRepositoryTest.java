@@ -56,6 +56,12 @@ public class TaskRepositoryTest {
     }
 
     @Test
+    void testFindByIdWhenIdIsNegative(){
+        Optional<Task> found = repository.findById(-1L);
+        assertFalse(found.isPresent());
+    }
+
+    @Test
     void testFindAllTasks(){
         Task task1 = new Task("Aufgabe 1");
         Task task2 = new Task("Aufgabe 2");
