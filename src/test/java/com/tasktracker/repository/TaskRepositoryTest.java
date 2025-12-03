@@ -86,4 +86,15 @@ public class TaskRepositoryTest {
         assertNotNull(allTasks);
         assertTrue(allTasks.isEmpty());
     }
+
+    @Test
+    void testUpdateTaskDescription(){
+        Task task = new Task("Aufgabe");
+        Task saved = repository.save(task);
+
+        saved.setTaskStatus(TaskStatus.ERLEDIGT);
+        Task updated = repository.update(saved);
+
+        assertEquals(TaskStatus.ERLEDIGT, updated.getTaskStatus());
+    }
 }
