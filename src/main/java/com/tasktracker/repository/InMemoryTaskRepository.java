@@ -27,4 +27,13 @@ public class InMemoryTaskRepository implements TaskRepository{
     public List<Task> findAll(){
         return new ArrayList<>(tasks.values());
     }
+
+    @Override
+    public Task update(Task task){
+        if (!tasks.containsKey(task.getTaskId())){
+            throw new IllegalArgumentException("Task nicht gefunden");
+        }
+        tasks.put(task.getTaskId(), task);
+        return task;
+    }
 }
