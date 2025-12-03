@@ -130,4 +130,12 @@ public class TaskRepositoryTest {
         boolean deleted = repository.delete(-1L);
         assertFalse(deleted);
     }
+
+    @Test
+    void testTaskExistsById(){
+        Task task = new Task("Aufgabe");
+        Task saved = repository.save(task);
+
+        assertTrue(repository.existsById(saved.getTaskId()));
+    }
 }
