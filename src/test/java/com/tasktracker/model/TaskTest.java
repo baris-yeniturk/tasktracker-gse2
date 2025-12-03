@@ -44,4 +44,11 @@ public class TaskTest{
         Task task = new Task("Original");
         assertThrows(IllegalArgumentException.class, () -> task.setDescription(""));
     }
+
+    @Test
+    void testUpdateTaskStatus(){
+        Task task = new Task("Aufgabe");
+        task.setStatus(Task.ERLEDIGT);
+        assertEquals(TaskStatus.ERLEDIGT, task.getTaskStatus());
+    }
 }
