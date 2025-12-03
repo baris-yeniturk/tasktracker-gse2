@@ -14,4 +14,5 @@ public interface TaskRepository{
     Optional<Task> findById(long id);
     List<Task> findAll();
     Task update(Task task);
+    boolean delete(long id);
 }
