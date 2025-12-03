@@ -119,4 +119,19 @@ public class Main{
             System.out.println("Fehler: " + e.getMessage());
         }
     }
+
+    public static void deleteTask(Scanner scanner, TaskRepository repository){
+        System.out.print("ID der zu löschenden Aufgabe: ");
+        try{
+            long id = Long.parseLong(scanner.nextLine());
+
+            if (repository.delete(id)){
+                System.out.println("Aufgabe erfolgreich gelöscht!");
+            }else{
+                System.out.println("Aufgabe nicht gefunden!");
+            }
+        }catch (NumberFormatException e){
+            System.out.println("Ungültige ID!");
+        }
+    }
 }
