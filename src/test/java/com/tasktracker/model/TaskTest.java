@@ -57,7 +57,7 @@ public class TaskTest{
     void testCreateTaskWithAllParameters(){
         Task task = new Task(1L, "Beschreibung", TaskStatus.ERLEDIGT);
 
-        assertEquals(1L, task.getTaskId);
+        assertEquals(1L, task.getTaskId());
         assertEquals("Beschreibung", task.getDescription());
         assertEquals(TaskStatus.ERLEDIGT, task.getTaskStatus());
     }
