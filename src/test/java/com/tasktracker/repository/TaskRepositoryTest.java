@@ -33,5 +33,6 @@ public class TaskRepositoryTest {
         assertNotNull(savedTask);
         assertTrue(savedTask.getTaskId() > 0);
         assertEquals("Aufgabe", savedTask.getDescription());
+        assertEquals(TaskStatus.OFFEN, savedTask.getTaskStatus());
     }
 }
