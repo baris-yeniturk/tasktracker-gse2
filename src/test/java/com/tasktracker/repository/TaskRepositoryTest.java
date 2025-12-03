@@ -138,4 +138,14 @@ public class TaskRepositoryTest {
 
         assertTrue(repository.existsById(saved.getTaskId()));
     }
+
+    @Test
+    void testExistsByIdForNonExistingTask(){
+        assertFalse(repository.existsById(999L));
+    }
+
+    @Test
+    void testExistByIdWithNegativeId(){
+        assertFalse(repository.existsById(-1L));
+    }
 }
