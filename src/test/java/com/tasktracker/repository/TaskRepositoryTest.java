@@ -118,4 +118,16 @@ public class TaskRepositoryTest {
         assertTrue(deleted);
         assertFalse(repository.findById(taskId).isPresent());
     }
+
+    @Test
+    void testDeleteNonExistingTask(){
+        boolean deleted = repository.delete(999L);
+        assertFalse(deleted);
+    }
+
+    @Test
+    void testDeleteWithNegativeId(){
+        boolean deleted = repository.delete(-1L);
+        assertFalse(deleted);
+    }
 }
