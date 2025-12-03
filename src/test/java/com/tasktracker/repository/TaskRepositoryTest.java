@@ -97,4 +97,13 @@ public class TaskRepositoryTest {
 
         assertEquals(TaskStatus.ERLEDIGT, updated.getTaskStatus());
     }
+
+    @Test
+    void testUpdateNonExistingTask(){
+        Task nonExistingTask = new Task(999L, "Diese Aufgabe gibt es nicht", TaskStatus.OFFEN);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            repository.update(nonExistingTask);
+        });
+    }
 }
