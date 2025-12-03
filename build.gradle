@@ -6,7 +6,6 @@ plugins {
 
 group = 'com.tasktracker'
 version = '1.0-SNAPSHOT'
-sourceCompatibility = '23'
 
 repositories {
     mavenCentral()
@@ -19,7 +18,7 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     // MSSQL Server
-    implementation 'com.microsoft.sqlserver:mssql-jdbc:12.4.2.jre11'
+    runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc:12.4.2.jre11'
 }
 
 application {
@@ -80,13 +79,21 @@ jar {
                 'Main-Class': 'com.tasktracker.Main',
                 'Implementation-Title': 'TaskTracker',
                 'Implementation-Version': version,
-                'Created-By': 'myenituerk',
-                'Build-Timestamp': new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date())
+                'Created-By': 'TDD Übung GSE2'
         )
     }
 
     from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+        configurations.runtimeClasspath.collect {
+            it.isDirectory() ? it : zipTree(it).matching {
+                exclude 'META-INF/*.RSA'
+                exclude 'META-INF/*.SF'
+                exclude 'META-INF/*.DSA'
+                exclude 'META-INF/*.MF'
+                exclude 'META-INF/LICENSE'
+                exclude 'META-INF/NOTICE'
+            }
+        }
     }
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
