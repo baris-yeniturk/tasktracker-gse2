@@ -72,4 +72,12 @@ public class TaskRepositoryTest {
         assertTrue(allTasks.stream().anyMatch(t -> t.getDescription().equals("Aufgabe 2")));
         assertTrue(allTasks.stream().anyMatch(t -> t.getDescription().equals("Aufgabe 3")));
     }
+
+    @Test
+    void testFindAllWhenEmpty(){
+        List<Task> allTasks = repository.findAll();
+
+        assertNotNull(allTasks);
+        assertTrue(allTasks.isEmpty());
+    }
 }
