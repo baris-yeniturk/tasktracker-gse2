@@ -15,4 +15,5 @@ public interface TaskRepository{
     List<Task> findAll();
     Task update(Task task);
     boolean delete(long id);
+    boolean existsById(long id);
 }

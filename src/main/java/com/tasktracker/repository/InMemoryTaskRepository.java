@@ -39,6 +39,17 @@ public class InMemoryTaskRepository implements TaskRepository{
 
     @Override
     public boolean delete(long id){
+        if (id <= 0){
+            return false;
+        }
         return tasks.remove(id) != null;
+    }
+
+    @Override
+    public boolean existsById(long id){
+        if (id <= 0){
+            return false;
+        }
+        return tasks.containsKey(id);
     }
 }
