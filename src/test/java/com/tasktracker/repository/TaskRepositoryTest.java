@@ -54,4 +54,22 @@ public class TaskRepositoryTest {
         Optional<Task> found = repository.findById(999L);
         assertFalse(found.isPresent());
     }
+
+    @Test
+    void testFindAllTasks(){
+        Task task1 = new Task("Aufgabe 1");
+        Task task2 = new Task("Aufgabe 2");
+        Task task3 = new Task("Aufgabe 3");
+
+        repository.save(task1);
+        repository.save(task2);
+        repository.save(task3);
+
+        List<Task> allTasks = repository.findAll();
+
+        assertEquals(3, allTasks.size());
+        assertTrue(allTasks.stream().anyMatch(t -> t.getDescription().equals("Aufgabe 1")));
+        assertTrue(allTasks.stream().anyMatch(t -> t.getDescription().equals("Aufgabe 2")));
+        assertTrue(allTasks.stream().anyMatch(t -> t.getDescription().equals("Aufgabe 3")));
+    }
 }

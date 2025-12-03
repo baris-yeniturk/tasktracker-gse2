@@ -22,4 +22,9 @@ public class InMemoryTaskRepository implements TaskRepository{
     public Optional<Task> findById(long id){
         return Optional.ofNullable(tasks.get(id));
     }
+
+    @Override
+    public List<Task> findAll(){
+        return null;
+    }
 }
