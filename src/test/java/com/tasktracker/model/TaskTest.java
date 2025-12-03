@@ -48,7 +48,8 @@ public class TaskTest{
     @Test
     void testUpdateTaskStatus(){
         Task task = new Task("Aufgabe");
-        task.setStatus(Task.ERLEDIGT);
+        assertEquals(TaskStatus.OFFEN, task.getTaskStatus());
+        task.setTaskStatus(TaskStatus.ERLEDIGT);
         assertEquals(TaskStatus.ERLEDIGT, task.getTaskStatus());
     }
 }
