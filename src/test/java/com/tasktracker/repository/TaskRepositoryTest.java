@@ -106,4 +106,16 @@ public class TaskRepositoryTest {
             repository.update(nonExistingTask);
         });
     }
+
+    @Test
+    void testDeleteTask(){
+        Task task = new Task("Zu löschende Aufgabe");
+        Task saved = repository.save(task);
+        long taskId = saved.getTaskId();
+
+        boolean deleted = repository.delete(taskId);
+
+        assertTrue(deleted);
+        assertFalse(repository.findById(taskId).isPresent());
+    }
 }
