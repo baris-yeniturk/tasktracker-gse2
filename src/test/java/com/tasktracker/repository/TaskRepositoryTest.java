@@ -48,4 +48,10 @@ public class TaskRepositoryTest {
         assertEquals(taskId, found.get().getTaskId());
         assertEquals("Aufgabe mit ID", found.get().getDescription());
     }
+
+    @Test
+    void testReturnEmptyForNonExistingId(){
+        Optional<Task> found = repository.findById(999L);
+        assertFalse(found.isPresent());
+    }
 }
