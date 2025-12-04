@@ -138,7 +138,7 @@ BEGIN TRY
     EXEC sp_UpdateTask @id = @task2_id, @status = 'ERLEDIGT';
 
     COMMIT TRANSACTION;
-    PRINT '   ✅ Transaction committed successfully';
+    PRINT '     Transaction committed successfully';
 
 END TRY
 BEGIN CATCH
@@ -148,7 +148,7 @@ END CATCH
 GO
 
 PRINT '========================================';
-PRINT '✅ Example queries completed!           ';
+PRINT '  Example queries completed!           ';
 PRINT '========================================';
 PRINT '';
 PRINT 'Try these queries in your application:';

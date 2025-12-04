@@ -23,11 +23,11 @@ BEGIN
         -- Drop database
         DROP DATABASE [TaskTrackerDB];
 
-        PRINT '✅ Database "' + @databaseName + '" dropped';
+        PRINT ' Database "' + @databaseName + '" dropped';
     END
     ELSE
     BEGIN
-        PRINT '⚠ Database "' + @databaseName + '" does not exist';
+        PRINT ' Database "' + @databaseName + '" does not exist';
     END
 END
 ELSE

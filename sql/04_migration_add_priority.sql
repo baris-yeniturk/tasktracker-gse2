@@ -24,11 +24,11 @@ BEGIN
     ALTER TABLE Tasks ADD CONSTRAINT CHK_Tasks_Priority
         CHECK (priority BETWEEN 1 AND 5);
 
-    PRINT '   ✓ Column "priority" added (default: 3, range: 1-5)';
+    PRINT '     Column "priority" added (default: 3, range: 1-5)';
 END
 ELSE
 BEGIN
-    PRINT '   ⚠ Column "priority" already exists';
+    PRINT '     Column "priority" already exists';
 END
 GO
 
@@ -38,7 +38,7 @@ IF NOT EXISTS (SELECT * FROM sys.indexes
                WHERE name = 'IX_Tasks_Priority' AND object_id = OBJECT_ID('Tasks'))
 BEGIN
     CREATE INDEX IX_Tasks_Priority ON Tasks(priority);
-    PRINT '   ✓ Index "IX_Tasks_Priority" created';
+    PRINT '     Index "IX_Tasks_Priority" created';
 END
 GO
 
@@ -76,7 +76,7 @@ END
 GO
 
 PRINT '========================================';
-PRINT '✅ Migration completed successfully!    ';
+PRINT '   Migration completed successfully!    ';
 PRINT '========================================';
 PRINT '';
 PRINT 'Changes applied:';
