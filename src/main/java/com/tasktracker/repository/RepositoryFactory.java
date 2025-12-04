@@ -61,18 +61,18 @@ public class RepositoryFactory{
     }
 
     private TaskRepository autoDetectRepository(){
-        System.out.println("🔍 Auto-Detect: Prüfe MSSQL-Verfügbarkeit...");
+        System.out.println("Auto-Detect: Prüfe MSSQL-Verfügbarkeit...");
 
         try {
             TaskRepository mssqlRepo = new SqlServerTaskRepository(properties);
 
             mssqlRepo.count();
-            System.out.println("✅ MSSQL verfügbar - verwende Datenbank");
+            System.out.println("MSSQL verfügbar - verwende Datenbank");
             return mssqlRepo;
 
         } catch (Exception e) {
             System.out.println("⚠ MSSQL nicht verfügbar: " + e.getMessage());
-            System.out.println("🔄 Fallback zu In-Memory Repository");
+            System.out.println("Fallback zu In-Memory Repository");
             return createInMemoryRepository();
         }
     }
@@ -85,11 +85,11 @@ public class RepositoryFactory{
                 props.load(input);
                 System.out.println("⚙️ Konfiguration geladen aus: " + CONFIG_FILE);
             } else {
-                System.out.println("⚠ " + CONFIG_FILE + " nicht gefunden, verwende Standardwerte");
+                System.out.println(CONFIG_FILE + " nicht gefunden, verwende Standardwerte");
                 setDefaultProperties(props);
             }
         } catch (IOException e) {
-            System.err.println("⚠ Fehler beim Laden von " + CONFIG_FILE + ": " + e.getMessage());
+            System.err.println("Fehler beim Laden von " + CONFIG_FILE + ": " + e.getMessage());
             setDefaultProperties(props);
         }
         return props;
