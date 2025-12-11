@@ -42,7 +42,7 @@ INSERT INTO Users (username, display_name, email) VALUES
 ('bob.test', 'Bob Tester', 'bob@tasktracker.local'),
 ('charlie.doc', 'Charlie Documenter', 'charlie@tasktracker.local');
 
-PRINT '✓ ' + CAST(@@ROWCOUNT AS NVARCHAR) + ' sample users inserted';
+PRINT '  ' + CAST(@@ROWCOUNT AS NVARCHAR) + ' sample users inserted';
 GO
 
 -- Show statistics

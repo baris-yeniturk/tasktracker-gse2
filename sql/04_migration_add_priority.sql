@@ -52,7 +52,7 @@ SET priority =
         WHEN status = 'IN_ARBEIT' THEN 3
         ELSE 4
     END;
-PRINT '   ✓ Updated ' + CAST(@@ROWCOUNT AS NVARCHAR) + ' tasks';
+PRINT '     Updated ' + CAST(@@ROWCOUNT AS NVARCHAR) + ' tasks';
 GO
 
 -- 4. Create view for high priority tasks
@@ -71,7 +71,7 @@ BEGIN
         WHERE priority <= 2
           AND status != ''ERLEDIGT''
         ORDER BY priority, created_at DESC');
-    PRINT '   ✓ View "vw_HighPriorityTasks" created';
+    PRINT '     View "vw_HighPriorityTasks" created';
 END
 GO
 

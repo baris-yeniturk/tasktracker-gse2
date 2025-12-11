@@ -44,11 +44,11 @@ BEGIN
         CONSTRAINT CHK_Tasks_Status CHECK (status IN ('OFFEN', 'IN_ARBEIT', 'ERLEDIGT', 'ARCHIVIERT')),
         CONSTRAINT CHK_Tasks_Title CHECK (LEN(TRIM(title)) > 0)
     );
-    PRINT '   ✓ Table "Tasks" created';
+    PRINT '     Table "Tasks" created';
 END
 ELSE
 BEGIN
-    PRINT '   ⚠ Table "Tasks" already exists';
+    PRINT '     Table "Tasks" already exists';
 END
 GO
 
@@ -106,7 +106,7 @@ BEGIN
         FROM Tasks
         WHERE status IN (''OFFEN'', ''IN_ARBEIT'')
         ORDER BY created_at DESC');
-    PRINT '   ✓ View "vw_OpenTasks" created';
+    PRINT '     View "vw_OpenTasks" created';
 END
 GO
 
@@ -122,7 +122,7 @@ BEGIN
         FROM Tasks
         WHERE status = ''ERLEDIGT''
         ORDER BY completed_at DESC');
-    PRINT '   ✓ View "vw_CompletedTasks" created';
+    PRINT '     View "vw_CompletedTasks" created';
 END
 GO
 
@@ -145,7 +145,7 @@ BEGIN
 
         SELECT SCOPE_IDENTITY() AS id;
     END');
-    PRINT '   ✓ Procedure "sp_CreateTask" created';
+    PRINT '     Procedure "sp_CreateTask" created';
 END
 GO
 
